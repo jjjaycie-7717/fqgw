@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>蜂桥官网 | 关于我们</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Noto Sans SC", "sans-serif"],
+            },
+            colors: {
+              fq: {
+                50: "#fff8f2",
+                100: "#ffeddc",
+                200: "#ffd7b1",
+                300: "#ffb977",
+                400: "#fb983f",
+                500: "#f47f1f",
+                600: "#d86614",
+                700: "#b44d10",
+              },
+            },
+            boxShadow: {
+              warm: "0 12px 30px rgba(216, 102, 20, 0.2)",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-stone-50 font-sans text-stone-900">
+    <!-- 顶部导航栏 -->
+    <header class="fixed inset-x-0 top-0 z-50 border-b border-fq-100 bg-white/95 backdrop-blur">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
+        <a href="./index.html" class="flex items-center gap-3">
+          <img src="./public/蜂桥创作橙色.jpeg" alt="蜂桥 Logo" class="h-9 w-9 rounded object-cover" />
+          <span class="text-xl font-bold tracking-wide text-fq-700">蜂桥</span>
+        </a>
+        <nav class="hidden items-center gap-7 text-base font-medium text-stone-700 md:flex">
+          <a href="./index.html" class="transition hover:text-fq-600">首页</a>
+          <div class="group relative">
+            <a href="./products.html" class="inline-flex items-center gap-1 transition hover:text-fq-600">
+              产品中心
+              <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.169l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06z" clip-rule="evenodd"></path>
+              </svg>
+            </a>
+            <div class="invisible pointer-events-none absolute left-1/2 top-8 z-20 w-[18rem] -translate-x-1/2 rounded-2xl border border-fq-100 bg-white p-3 opacity-0 shadow-warm transition duration-200 group-hover:visible group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:visible group-focus-within:pointer-events-auto group-focus-within:opacity-100 hover:visible hover:pointer-events-auto hover:opacity-100">
+              <div class="grid gap-2">
+                <a href="https://fengqiao.tv/create/video/index.html" target="_blank" rel="noopener noreferrer" class="rounded-xl border border-fq-100 bg-fq-50/50 px-3 py-2 hover:border-fq-200 hover:bg-fq-50">
+                  <div class="flex items-center gap-3">
+                    <img src="./public/fqcz.png" alt="蜂桥创作Logo" class="h-9 w-9 rounded-md border border-fq-100 bg-white object-contain p-1" />
+                    <div>
+                      <p class="text-sm font-semibold text-stone-900">蜂桥创作</p>
+                      <p class="mt-1 text-xs text-stone-600">AI 短视频制作工具</p>
+                    </div>
+                  </div>
+                </a>
+                <a href="https://www.crebee.cn/" target="_blank" rel="noopener noreferrer" class="rounded-xl border border-fq-100 bg-fq-50/50 px-3 py-2 hover:border-fq-200 hover:bg-fq-50">
+                  <div class="flex items-center gap-3">
+                    <img src="./public/CreBeelogo.png" alt="CreBee Logo" class="h-9 w-9 rounded-md border border-fq-100 bg-white object-contain p-1" />
+                    <div>
+                      <p class="text-sm font-semibold text-stone-900">CreBee</p>
+                      <p class="mt-1 text-xs text-stone-600">新媒体矩阵运营工具</p>
+                    </div>
+                  </div>
+                </a>
+                <a href="https://www.shipindanao.com/" target="_blank" rel="noopener noreferrer" class="rounded-xl border border-fq-100 bg-fq-50/50 px-3 py-2 hover:border-fq-200 hover:bg-fq-50">
+                  <div class="flex items-center gap-3">
+                    <img src="./public/视频大脑.png" alt="视频大脑Logo" class="h-9 w-9 rounded-md border border-fq-100 bg-white object-contain p-1" />
+                    <div>
+                      <p class="text-sm font-semibold text-stone-900">视频大脑</p>
+                      <p class="mt-1 text-xs text-stone-600">短视频营销协同数智化平台</p>
+                    </div>
+                  </div>
+                </a>
+                <a href="https://www.darenguanjia.com/" target="_blank" rel="noopener noreferrer" class="rounded-xl border border-fq-100 bg-fq-50/50 px-3 py-2 hover:border-fq-200 hover:bg-fq-50">
+                  <div class="flex items-center gap-3">
+                    <img src="./public/达人管家.png" alt="达人管家Logo" class="h-9 w-9 rounded-md border border-fq-100 bg-white object-contain p-1" />
+                    <div>
+                      <p class="text-sm font-semibold text-stone-900">达人管家</p>
+                      <p class="mt-1 text-xs text-stone-600">智能化一站式达人营销管理平台</p>
+                    </div>
+                  </div>
+                </a>
+                <a href="https://www.9466.com/" target="_blank" rel="noopener noreferrer" class="rounded-xl border border-fq-100 bg-fq-50/50 px-3 py-2 hover:border-fq-200 hover:bg-fq-50">
+                  <div class="flex items-center gap-3">
+                    <img src="./public/AI精选头像.PNG" alt="AI精选头像" class="h-9 w-9 rounded-md border border-fq-100 bg-white object-contain p-1" />
+                    <div>
+                      <p class="text-sm font-semibold text-stone-900">蜂桥 AI 精选</p>
+                      <p class="mt-1 text-xs text-stone-600">创作者赋能与内容趋势平台</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <a href="./help.html" class="transition hover:text-fq-600">帮助中心</a>
+          <a href="./consultation.html" class="transition hover:text-fq-600">产品咨询</a>
+          <a href="./about.html" class="text-fq-700">关于我们</a>
+        </nav>
+        <div class="flex items-center gap-3">
+          <button
+            type="button"
+            id="openConsultFromNav"
+            class="h-10 rounded-full bg-fq-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-fq-700"
+          >
+            立即咨询
+          </button>
+          <div class="group relative">
+            <button
+              type="button"
+              class="h-10 rounded-full border border-fq-600 px-4 py-2 text-sm font-semibold text-fq-700 transition hover:bg-fq-50"
+            >
+              联系我们
+            </button>
+            <div class="invisible absolute right-0 top-12 w-56 rounded-xl border border-fq-100 bg-white p-3 opacity-0 shadow-warm transition group-hover:visible group-hover:opacity-100">
+              <img src="./public/contact code.jpeg" alt="企业微信二维码" class="h-48 w-full rounded-lg object-cover" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-fq-100 md:hidden">
+        <nav class="mx-auto flex max-w-7xl gap-5 overflow-x-auto px-4 py-2 text-base font-medium text-stone-700">
+          <a href="./index.html" class="whitespace-nowrap">首页</a>
+          <a href="./products.html" class="whitespace-nowrap">产品中心</a>
+          <a href="./help.html" class="whitespace-nowrap">帮助中心</a>
+          <a href="./consultation.html" class="whitespace-nowrap">产品咨询</a>
+          <a href="./about.html" class="whitespace-nowrap text-fq-700">关于我们</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-4 pb-16 pt-28 md:pt-24 lg:px-8">
+      <!-- 关于我们内容 -->
+      <section class="space-y-12">
+        <div class="relative overflow-hidden rounded-3xl border border-fq-100 bg-gradient-to-br from-white via-fq-50/60 to-fq-100/50 p-6 shadow-sm md:p-10">
+          <div class="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-fq-200/35 blur-3xl"></div>
+          <div class="pointer-events-none absolute -bottom-16 -left-16 h-52 w-52 rounded-full bg-fq-100/70 blur-3xl"></div>
+          <p class="text-sm font-semibold uppercase tracking-[0.28em] text-fq-700">关于我们</p>
+          <h1 class="mt-4 max-w-5xl text-3xl font-extrabold leading-tight text-stone-900 md:text-5xl">
+            北京思拓合众科技有限公司
+          </h1>
+          <p class="mt-6 max-w-5xl border-l-4 border-fq-300 pl-4 text-sm leading-8 text-stone-700 md:text-base">
+            北京思拓合众科技有限公司（简称：思拓合众）是中国领先的智能媒体技术解决方案提供商。公司由PHPCMS创始人钟胜辉先生于2009年8月创立，总部位于北京中关村上地信息产业基地，并设有武汉分公司、南京及乌鲁木齐办事处。
+          </p>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-[1.08fr_0.92fr]">
+          <div class="overflow-hidden rounded-2xl border border-fq-100 bg-white shadow-sm">
+            <img src="./public/1758542894308.jpg" alt="企业文化展示图" class="h-full min-h-[340px] w-full object-cover" />
+          </div>
+          <div class="space-y-4">
+            <article class="rounded-2xl border border-fq-100 bg-white px-5 py-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:px-6">
+              <div class="flex items-center justify-between">
+                <p class="inline-flex rounded-full bg-orange-50 px-3 py-1 text-sm font-bold text-orange-700">使命</p>
+                <span class="h-2.5 w-2.5 rounded-full bg-orange-300"></span>
+              </div>
+              <p class="mt-3 text-base font-semibold leading-7 text-stone-900">以智能内容技术赋能，成就客户，成就奋斗者</p>
+            </article>
+            <article class="rounded-2xl border border-fq-100 bg-white px-5 py-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:px-6">
+              <div class="flex items-center justify-between">
+                <p class="inline-flex rounded-full bg-teal-50 px-3 py-1 text-sm font-bold text-teal-700">愿景</p>
+                <span class="h-2.5 w-2.5 rounded-full bg-teal-300"></span>
+              </div>
+              <p class="mt-3 text-base font-semibold leading-7 text-stone-900">成为全球领先的智能内容科技厂商</p>
+            </article>
+            <article class="rounded-2xl border border-fq-100 bg-white px-5 py-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:px-6">
+              <div class="flex items-center justify-between">
+                <p class="inline-flex rounded-full bg-rose-50 px-3 py-1 text-sm font-bold text-rose-700">价值观</p>
+                <span class="h-2.5 w-2.5 rounded-full bg-rose-300"></span>
+              </div>
+              <p class="mt-3 text-base font-semibold leading-7 text-stone-900">客户成功、互相成就、卓越运营、实事求是、敬畏专业、简化创新</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="rounded-3xl border border-fq-100 bg-gradient-to-br from-white via-fq-50/70 to-fq-100/65 p-5 shadow-sm md:p-6">
+          <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <article class="rounded-2xl border border-orange-200 bg-white/95 p-5 shadow-sm">
+              <p class="inline-flex rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold tracking-wide text-orange-700">服务客户</p>
+              <p class="mt-4 text-4xl font-extrabold tracking-tight text-orange-600 md:text-5xl">800+</p>
+              <p class="mt-2 text-sm text-stone-600">累计服务政企与品牌客户</p>
+            </article>
+            <article class="rounded-2xl border border-cyan-200 bg-white/95 p-5 shadow-sm">
+              <p class="inline-flex rounded-full bg-cyan-50 px-3 py-1 text-xs font-semibold tracking-wide text-cyan-700">省市覆盖</p>
+              <p class="mt-4 text-4xl font-extrabold tracking-tight text-cyan-600 md:text-5xl">31</p>
+              <p class="mt-2 text-sm text-stone-600">业务覆盖全国重点省市区域</p>
+            </article>
+            <article class="rounded-2xl border border-violet-200 bg-white/95 p-5 shadow-sm">
+              <p class="inline-flex rounded-full bg-violet-50 px-3 py-1 text-xs font-semibold tracking-wide text-violet-700">CMS经验</p>
+              <p class="mt-4 text-4xl font-extrabold tracking-tight text-violet-600 md:text-5xl">20年</p>
+              <p class="mt-2 text-sm text-stone-600">内容技术与产品能力沉淀</p>
+            </article>
+            <article class="rounded-2xl border border-emerald-200 bg-white/95 p-5 shadow-sm">
+              <p class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold tracking-wide text-emerald-700">融媒体沉淀</p>
+              <p class="mt-4 text-4xl font-extrabold tracking-tight text-emerald-600 md:text-5xl">16年</p>
+              <p class="mt-2 text-sm text-stone-600">深耕融媒场景与协同体系</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-[1.02fr_0.98fr]">
+          <article class="rounded-3xl border border-fq-100 bg-white p-6 shadow-sm">
+            <div class="mb-4 h-1.5 w-16 rounded-full bg-gradient-to-r from-fq-500 to-fq-300"></div>
+            <h3 class="text-lg font-bold text-stone-900">发展历程</h3>
+            <p class="mt-4 text-sm leading-8 text-stone-700">
+              公司以内容技术为核心，在CMS系统领域积累20年经验，在融媒体系统方面具备16年技术沉淀，已累计服务800多家客户，覆盖全国31个省市自治区，客户范围包括报业、杂志、广电、网络媒体、政府、高校与企业等多个领域。
+            </p>
+          </article>
+          <article class="rounded-3xl border border-fq-100 bg-gradient-to-br from-white via-fq-50/40 to-fq-100/40 p-6 shadow-sm">
+            <div class="mb-4 h-1.5 w-16 rounded-full bg-gradient-to-r from-fq-500 to-fq-300"></div>
+            <h3 class="text-lg font-bold text-stone-900">2025战略转型</h3>
+            <p class="mt-4 text-sm leading-8 text-stone-700">
+              2025年，公司全面启动"AI+短视频+SaaS+2B/2C"战略转型，自主研发并推出视频大脑、达人管家和CreBee三款AI产品。蜂桥作为公司AI内容增长产品线品牌，致力于为企业和个人创作者提供智能内容生产解决方案。
+            </p>
+            <div class="mt-5 flex flex-wrap gap-2 text-xs font-semibold text-fq-700">
+              <span class="rounded-full border border-fq-200 bg-white px-3 py-1">AI+短视频+SaaS+2B/2C</span>
+              <span class="rounded-full border border-fq-200 bg-white px-3 py-1">蜂桥</span>
+              <span class="rounded-full border border-fq-200 bg-white px-3 py-1">视频大脑</span>
+              <span class="rounded-full border border-fq-200 bg-white px-3 py-1">达人管家</span>
+              <span class="rounded-full border border-fq-200 bg-white px-3 py-1">CreBee</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="border-t border-fq-100 bg-white">
+      <div class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+        <div class="grid gap-10 md:grid-cols-5">
+          <div>
+            <div class="flex items-center gap-3">
+              <img src="./public/蜂桥创作橙色.jpeg" alt="蜂桥 Logo" class="h-8 w-8 rounded object-cover" />
+              <span class="text-2xl font-bold text-fq-700">蜂桥</span>
+            </div>
+            <p class="mt-4 text-sm leading-7 text-stone-600">
+              北京思拓合众科技有限公司 | 中国领先的智能媒体技术解决方案提供商
+            </p>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-stone-900">产品</h3>
+            <div class="mt-4 space-y-2 text-sm text-stone-600">
+              <a class="block hover:text-fq-700" href="https://fengqiao.tv/create/video/index.html" target="_blank" rel="noopener noreferrer">蜂桥创作</a>
+              <a class="block hover:text-fq-700" href="https://www.crebee.cn/" target="_blank" rel="noopener noreferrer">CreBee</a>
+              <a class="block hover:text-fq-700" href="https://www.shipindanao.com/" target="_blank" rel="noopener noreferrer">视频大脑</a>
+              <a class="block hover:text-fq-700" href="https://www.darenguanjia.com/" target="_blank" rel="noopener noreferrer">达人管家</a>
+              <a class="block hover:text-fq-700" href="https://www.9466.com/" target="_blank" rel="noopener noreferrer">AI 精选</a>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-stone-900">支持</h3>
+            <div class="mt-4 space-y-2 text-sm text-stone-600">
+              <a class="block hover:text-fq-700" href="./help.html">帮助中心</a>
+              <a class="block hover:text-fq-700" href="./consultation.html">产品咨询</a>
+              <a class="block hover:text-fq-700" href="./products.html">产品中心</a>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-stone-900">公司</h3>
+            <div class="mt-4 space-y-2 text-sm text-stone-600">
+              <a class="block hover:text-fq-700" href="./about.html">关于我们</a>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-stone-900">联系我们</h3>
+            <img src="./public/contact code.jpeg" alt="蜂桥企业微信二维码" class="mt-3 h-28 w-28 rounded-xl border border-fq-100 object-cover" />
+          </div>
+        </div>
+        <div class="mt-10 flex flex-col gap-3 border-t border-fq-100 pt-5 text-xs text-stone-500 sm:flex-row sm:items-center sm:justify-between">
+          <p>© 2026 北京思拓合众科技有限公司. 保留所有权利。</p>
+          <p>电话咨询：13237183098</p>
+        </div>
+      </div>
+    </footer>
+    <!-- 侧边固定留资组件 -->
+        <aside id="leadForm" class="fixed right-4 top-[56%] z-40 -translate-y-1/2 md:right-6 md:top-1/2">
+      <div class="rounded-[30px] border border-fq-200 bg-white/80 p-2 shadow-warm backdrop-blur-md">
+        <div class="flex flex-col items-center gap-2">
+          <div class="relative">
+            <button
+              type="button"
+              id="openConsultFromDock"
+              class="flex h-20 w-16 flex-col items-center justify-center rounded-2xl border border-transparent text-fq-700 transition hover:bg-fq-50"
+            >
+              <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 7a8 8 0 0 1 16 0v2a3 3 0 0 1 2 2.8V13a3 3 0 0 1-3 3h-1a3 3 0 0 1-3-3v-2a3 3 0 0 1 3-3h1V7a6 6 0 0 0-12 0v1h1a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-1.2A3 3 0 0 1 6 9V7z"></path>
+              </svg>
+              <span class="mt-2 text-xs font-semibold">立即咨询</span>
+            </button>
+          </div>
+
+          <div class="group relative">
+            <button
+              type="button"
+              data-dock-toggle="contact"
+              class="flex h-20 w-16 flex-col items-center justify-center rounded-2xl border border-transparent text-fq-700 transition hover:bg-fq-50"
+            >
+              <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 7h16v10H4z"></path>
+                <path d="M7 10h10M7 13h6"></path>
+              </svg>
+              <span class="mt-2 text-xs font-semibold">微信咨询</span>
+            </button>
+            <div
+              data-dock-panel="contact"
+              class="invisible pointer-events-none absolute right-full top-1/2 w-44 -translate-y-1/2 rounded-2xl border border-fq-200 bg-white p-3 opacity-0 shadow-warm transition duration-200 group-hover:visible group-hover:pointer-events-auto group-hover:opacity-100"
+            >
+              <p class="text-xs font-semibold text-stone-700">企业微信二维码</p>
+              <img src="./public/contact code.jpeg" alt="企业微信二维码" class="mt-2 h-36 w-full rounded-lg object-cover" />
+            </div>
+          </div>
+
+          <div class="group relative">
+            <button
+              type="button"
+              data-dock-toggle="phone"
+              class="flex h-20 w-16 flex-col items-center justify-center rounded-2xl border border-transparent text-fq-700 transition hover:bg-fq-50"
+            >
+              <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M6 3h4l1 5-2.5 1.5a14 14 0 0 0 6 6L16 13l5 1v4c0 1-1 2-2 2A17 17 0 0 1 4 5c0-1 1-2 2-2z"></path>
+              </svg>
+              <span class="mt-2 text-xs font-semibold">电话咨询</span>
+            </button>
+            <div
+              data-dock-panel="phone"
+              class="invisible pointer-events-none absolute right-full top-1/2 w-44 -translate-y-1/2 rounded-2xl border border-fq-200 bg-white p-4 opacity-0 shadow-warm transition duration-200 group-hover:visible group-hover:pointer-events-auto group-hover:opacity-100"
+            >
+              <p class="text-xs text-stone-600">电话咨询</p>
+              <p class="mt-1 text-lg font-extrabold text-fq-700">13237183098</p>
+              <button
+                type="button"
+                class="mt-3 inline-flex items-center justify-center rounded-lg border border-fq-200 bg-fq-50 px-3 py-1.5 text-xs font-bold text-fq-700 transition hover:bg-fq-100"
+                onclick="if(navigator.clipboard){navigator.clipboard.writeText('13237183098').then(()=>{const t=this.textContent;this.textContent='已复制';setTimeout(()=>this.textContent=t,1200);});}"
+              >
+                复制
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a
+        href="#"
+        class="mx-auto mt-4 flex h-14 w-14 items-center justify-center rounded-full border border-fq-100 bg-white/95 text-fq-600 shadow-warm transition hover:bg-fq-50"
+        aria-label="返回顶部"
+      >
+        <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 19V6"></path>
+          <path d="M6 12l6-6 6 6"></path>
+        </svg>
+      </a>
+    </aside>
+
+
+
+    <!-- 全局咨询弹窗 -->
+    <div id="globalConsultModal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-stone-900/45 p-4 backdrop-blur-sm">
+      <div class="w-full max-w-md rounded-2xl border border-fq-100 bg-white p-5 shadow-2xl md:p-6">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="text-xs font-semibold tracking-[0.2em] text-fq-700">立即咨询</p>
+            <h3 class="mt-2 text-2xl font-extrabold text-stone-900">获取专属增长方案</h3>
+          </div>
+          <button
+            id="closeGlobalConsultModal"
+            type="button"
+            class="rounded-lg p-2 text-stone-500 transition hover:bg-fq-50 hover:text-fq-700"
+            aria-label="关闭咨询弹窗"
+          >
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <p class="mt-3 text-sm text-stone-600">请填写信息，我们将尽快与您联系。</p>
+        <form id="globalConsultForm" class="mt-4 space-y-2.5">
+          <input
+            type="text"
+            id="globalName"
+            placeholder="姓名"
+            class="w-full rounded-lg border border-fq-200 px-3 py-2.5 text-sm outline-none ring-fq-300 focus:ring"
+          />
+          <input
+            type="tel"
+            id="globalPhone"
+            placeholder="手机号"
+            class="w-full rounded-lg border border-fq-200 px-3 py-2.5 text-sm outline-none ring-fq-300 focus:ring"
+          />
+                <div class="rounded-lg border border-fq-200 px-3 py-2.5 text-sm text-stone-700">
+            <p class="mb-2 font-semibold text-stone-600">意向产品（可多选）</p>
+            <label class="flex items-center gap-2 py-1"><input type="checkbox" name="globalIntentionProducts" value="蜂桥创作" class="h-4 w-4 rounded border-fq-300 text-fq-600 focus:ring-fq-300" />蜂桥创作</label>
+            <label class="flex items-center gap-2 py-1"><input type="checkbox" name="globalIntentionProducts" value="CreBee" class="h-4 w-4 rounded border-fq-300 text-fq-600 focus:ring-fq-300" />CreBee</label>
+            <label class="flex items-center gap-2 py-1"><input type="checkbox" name="globalIntentionProducts" value="蜂桥视频大脑" class="h-4 w-4 rounded border-fq-300 text-fq-600 focus:ring-fq-300" />蜂桥视频大脑</label>
+            <label class="flex items-center gap-2 py-1"><input type="checkbox" name="globalIntentionProducts" value="蜂桥达人管家" class="h-4 w-4 rounded border-fq-300 text-fq-600 focus:ring-fq-300" />蜂桥达人管家</label>
+            <label class="flex items-center gap-2 py-1"><input type="checkbox" name="globalIntentionProducts" value="蜂桥 AI 精选" class="h-4 w-4 rounded border-fq-300 text-fq-600 focus:ring-fq-300" />蜂桥 AI 精选</label>
+          </div>
+          <button type="submit" class="w-full rounded-lg bg-fq-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-fq-700">
+            提交咨询
+          </button>
+        </form>
+        <p id="globalConsultMessage" class="mt-2 text-xs font-semibold text-fq-700"></p>
+      </div>
+    </div>
+
+    <script>
+      const countdownNodes = document.querySelectorAll("[data-countdown]");
+      const deadline = new Date(Date.now() + 72 * 60 * 60 * 1000);
+      function renderTime() {
+        const ms = deadline - Date.now();
+        const safeMs = ms > 0 ? ms : 0;
+        const s = Math.floor(safeMs / 1000);
+        const d = Math.floor(s / 86400);
+        const h = Math.floor((s % 86400) / 3600);
+        const m = Math.floor((s % 3600) / 60);
+        const sec = s % 60;
+        const milli = safeMs % 1000;
+        const text = `${String(d).padStart(2, "0")}天 ${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}.${String(milli).padStart(3, "0")}`;
+        countdownNodes.forEach((n) => (n.textContent = text));
+      }
+      renderTime();
+      setInterval(renderTime, 50);
+      // 全局咨询弹窗
+      const globalConsultModal = document.getElementById("globalConsultModal");
+      const closeGlobalConsultModal = document.getElementById("closeGlobalConsultModal");
+      const globalConsultForm = document.getElementById("globalConsultForm");
+      const globalConsultMessage = document.getElementById("globalConsultMessage");
+      const openGlobalConsultModal = () => {
+        if (!globalConsultModal) return;
+        globalConsultModal.classList.remove("hidden");
+        globalConsultModal.classList.add("flex");
+        document.body.classList.add("overflow-hidden");
+        const firstInput = document.getElementById("globalName");
+        if (firstInput) firstInput.focus();
+      };
+      const hideGlobalConsultModal = () => {
+        if (!globalConsultModal) return;
+        globalConsultModal.classList.add("hidden");
+        globalConsultModal.classList.remove("flex");
+        document.body.classList.remove("overflow-hidden");
+      };
+      if (closeGlobalConsultModal) closeGlobalConsultModal.addEventListener("click", hideGlobalConsultModal);
+      if (globalConsultModal) {
+        globalConsultModal.addEventListener("click", (event) => {
+          if (event.target === globalConsultModal) hideGlobalConsultModal();
+        });
+      }
+      if (globalConsultForm) {
+        globalConsultForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const name = document.getElementById("globalName").value.trim();
+          const phone = document.getElementById("globalPhone").value.trim();
+          const intentionValues = Array.from(globalConsultForm.querySelectorAll('input[name="globalIntentionProducts"]:checked')).map((node) => node.value);
+          if (!name || !phone || intentionValues.length === 0) {
+            globalConsultMessage.textContent = "请完整填写姓名、手机号、意向产品";
+            return;
+          }
+          if (!/^1\d{10}$/.test(phone)) {
+            globalConsultMessage.textContent = "请输入正确的手机号";
+            return;
+          }
+          globalConsultMessage.textContent = "提交成功，我们将尽快与您联系";
+          globalConsultForm.reset();
+        });
+      }
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && globalConsultModal && !globalConsultModal.classList.contains("hidden")) {
+          hideGlobalConsultModal();
+        }
+      });
+      // 侧边咨询悬浮按钮：点击展开面板（移动端友好）
+      const dock = document.getElementById("leadForm");
+      if (dock) {
+        const navConsultBtn = document.getElementById("openConsultFromNav");
+        const dockConsultBtn = document.getElementById("openConsultFromDock");
+        const dockToggles = dock.querySelectorAll("[data-dock-toggle]");
+        const closeDockPanels = () => {
+          dock.querySelectorAll("[data-dock-panel]").forEach((panel) => {
+            panel.classList.add("invisible", "opacity-0", "pointer-events-none");
+            panel.classList.remove("visible", "opacity-100", "pointer-events-auto");
+          });
+        };
+        const openDockPanel = (key) => {
+          const panel = dock.querySelector(`[data-dock-panel="${key}"]`);
+          if (!panel) return null;
+          panel.classList.remove("invisible", "opacity-0", "pointer-events-none");
+          panel.classList.add("visible", "opacity-100", "pointer-events-auto");
+          return panel;
+        };
+
+        dockToggles.forEach((btn) => {
+          btn.addEventListener("click", (event) => {
+            const key = btn.getAttribute("data-dock-toggle");
+            const panel = dock.querySelector(`[data-dock-panel="${key}"]`);
+            if (!panel) return;
+            const willOpen = panel.classList.contains("invisible");
+            closeDockPanels();
+            if (willOpen) {
+              openDockPanel(key);
+            }
+            event.stopPropagation();
+          });
+        });
+
+        if (navConsultBtn) {
+          navConsultBtn.addEventListener("click", (event) => {
+            closeDockPanels();
+            openGlobalConsultModal();
+            event.stopPropagation();
+          });
+        }
+        if (dockConsultBtn) {
+          dockConsultBtn.addEventListener("click", (event) => {
+            closeDockPanels();
+            openGlobalConsultModal();
+            event.stopPropagation();
+          });
+        }
+
+        document.addEventListener("click", (event) => {
+          if (!dock.contains(event.target)) closeDockPanels();
+        });
+      }
+
+    </script>
+  </body>
+</html>
