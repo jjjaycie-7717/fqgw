@@ -2415,6 +2415,20 @@
       const closeGlobalConsultModal = document.getElementById("closeGlobalConsultModal");
       const globalConsultForm = document.getElementById("globalConsultForm");
       const globalConsultMessage = document.getElementById("globalConsultMessage");
+      let shouldSuppressPromoModal = false;
+      let promoModalTimer = null;
+      const markConsultInteracted = () => {
+        shouldSuppressPromoModal = true;
+        if (promoModalTimer !== null) {
+          clearTimeout(promoModalTimer);
+          promoModalTimer = null;
+        }
+        const promoElement = document.getElementById("promoModal");
+        if (promoElement) {
+          promoElement.classList.add("hidden");
+          promoElement.classList.remove("flex");
+        }
+      };
       const openGlobalConsultModal = () => {
         if (!globalConsultModal) return;
         globalConsultModal.classList.remove("hidden");
@@ -2429,15 +2443,24 @@
         globalConsultModal.classList.remove("flex");
         document.body.classList.remove("overflow-hidden");
       };
-      if (closeGlobalConsultModal) closeGlobalConsultModal.addEventListener("click", hideGlobalConsultModal);
+      if (closeGlobalConsultModal) {
+        closeGlobalConsultModal.addEventListener("click", () => {
+          markConsultInteracted();
+          hideGlobalConsultModal();
+        });
+      }
       if (globalConsultModal) {
         globalConsultModal.addEventListener("click", (event) => {
-          if (event.target === globalConsultModal) hideGlobalConsultModal();
+          if (event.target === globalConsultModal) {
+            markConsultInteracted();
+            hideGlobalConsultModal();
+          }
         });
       }
       if (globalConsultForm) {
-        globalConsultForm.addEventListener("submit", (event) => {
+        globalConsultForm.addEventListener("submit", async (event) => {
           event.preventDefault();
+          markConsultInteracted();
           const name = document.getElementById("globalName").value.trim();
           const phone = document.getElementById("globalPhone").value.trim();
           const intentionValues = Array.from(globalConsultForm.querySelectorAll('input[name="globalIntentionProducts"]:checked')).map((node) => node.value);
@@ -2449,12 +2472,33 @@
             globalConsultMessage.textContent = "请输入正确的手机号";
             return;
           }
-          globalConsultMessage.textContent = "提交成功，我们将尽快与您联系";
-          globalConsultForm.reset();
+          try {
+            globalConsultMessage.textContent = "提交中...";
+            const response = await fetch("/api/leads/consultation", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                name,
+                phone,
+                intentionProducts: intentionValues,
+                sourcePage: window.location.pathname,
+              }),
+            });
+            const result = await response.json();
+            if (!response.ok || !result.ok) {
+              globalConsultMessage.textContent = result.message || "提交失败，请稍后再试";
+              return;
+            }
+            globalConsultMessage.textContent = "提交成功，我们将尽快与您联系";
+            globalConsultForm.reset();
+          } catch {
+            globalConsultMessage.textContent = "网络异常，请稍后重试";
+          }
         });
       }
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape" && globalConsultModal && !globalConsultModal.classList.contains("hidden")) {
+          markConsultInteracted();
           hideGlobalConsultModal();
         }
       });
@@ -2465,7 +2509,7 @@
         const ctaPhoneInput = document.getElementById("ctaPhoneInput");
         const ctaAgree = document.getElementById("ctaAgree");
         const ctaPhoneMessage = document.getElementById("ctaPhoneMessage");
-        ctaPhoneForm.addEventListener("submit", (event) => {
+        ctaPhoneForm.addEventListener("submit", async (event) => {
           event.preventDefault();
           const phone = ctaPhoneInput.value.trim();
           if (!/^1\d{10}$/.test(phone)) {
@@ -2476,8 +2520,26 @@
             ctaPhoneMessage.textContent = "请先阅读并同意《隐私政策》和《用户协议》";
             return;
           }
-          ctaPhoneMessage.textContent = "提交成功，我们将尽快安排专人回电";
-          ctaPhoneForm.reset();
+          try {
+            ctaPhoneMessage.textContent = "提交中...";
+            const response = await fetch("/api/leads/phone", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                phone,
+                source: "index-cta",
+              }),
+            });
+            const result = await response.json();
+            if (!response.ok || !result.ok) {
+              ctaPhoneMessage.textContent = result.message || "提交失败，请稍后再试";
+              return;
+            }
+            ctaPhoneMessage.textContent = "提交成功，我们将尽快安排专人回电";
+            ctaPhoneForm.reset();
+          } catch {
+            ctaPhoneMessage.textContent = "网络异常，请稍后重试";
+          }
         });
       }
 
@@ -2486,15 +2548,33 @@
       if (promoPhoneForm) {
         const promoPhoneInput = document.getElementById("promoPhoneInput");
         const promoPhoneMessage = document.getElementById("promoPhoneMessage");
-        promoPhoneForm.addEventListener("submit", (event) => {
+        promoPhoneForm.addEventListener("submit", async (event) => {
           event.preventDefault();
           const phone = promoPhoneInput.value.trim();
-          if (!/^1\\d{10}$/.test(phone)) {
+          if (!/^1\d{10}$/.test(phone)) {
             promoPhoneMessage.textContent = "请输入正确的手机号";
             return;
           }
-          promoPhoneMessage.textContent = "提交成功，我们将尽快联系您";
-          promoPhoneForm.reset();
+          try {
+            promoPhoneMessage.textContent = "提交中...";
+            const response = await fetch("/api/leads/phone", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                phone,
+                source: "index-promo",
+              }),
+            });
+            const result = await response.json();
+            if (!response.ok || !result.ok) {
+              promoPhoneMessage.textContent = result.message || "提交失败，请稍后再试";
+              return;
+            }
+            promoPhoneMessage.textContent = "提交成功，我们将尽快联系您";
+            promoPhoneForm.reset();
+          } catch {
+            promoPhoneMessage.textContent = "网络异常，请稍后重试";
+          }
         });
       }
 
@@ -2503,6 +2583,7 @@
       const closeModalIcon = document.getElementById("closeModalIcon");
       const promoPanel = document.getElementById("promoPanel");
       const openPromoModal = () => {
+        if (!promoModal || shouldSuppressPromoModal) return;
         promoModal.classList.remove("hidden");
         promoModal.classList.add("flex");
         if (promoPanel) {
@@ -2512,23 +2593,28 @@
         }
       };
       const hidePromoModal = () => {
+        if (!promoModal) return;
         promoModal.classList.add("hidden");
         promoModal.classList.remove("flex");
       };
-      setTimeout(() => {
+      promoModalTimer = setTimeout(() => {
         openPromoModal();
+        promoModalTimer = null;
       }, 40000);
 
       if (closeModalIcon) closeModalIcon.addEventListener("click", hidePromoModal);
 
-      promoModal.addEventListener("click", (event) => {
-        if (event.target === promoModal) {
-          hidePromoModal();
-        }
-      });
+      if (promoModal) {
+        promoModal.addEventListener("click", (event) => {
+          if (event.target === promoModal) {
+            hidePromoModal();
+          }
+        });
+      }
       const heroConsultBtn = document.getElementById("openConsultFromHero");
       if (heroConsultBtn) {
         heroConsultBtn.addEventListener("click", (event) => {
+          markConsultInteracted();
           openGlobalConsultModal();
           event.stopPropagation();
         });
@@ -2571,6 +2657,7 @@
         if (navConsultBtn) {
           navConsultBtn.addEventListener("click", (event) => {
             closeDockPanels();
+            markConsultInteracted();
             openGlobalConsultModal();
             event.stopPropagation();
           });
@@ -2578,6 +2665,7 @@
         if (dockConsultBtn) {
           dockConsultBtn.addEventListener("click", (event) => {
             closeDockPanels();
+            markConsultInteracted();
             openGlobalConsultModal();
             event.stopPropagation();
           });

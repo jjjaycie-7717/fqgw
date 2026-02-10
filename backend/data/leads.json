@@ -1,0 +1,57 @@
+{
+  "consultations": [
+    {
+      "id": "f4cfa626-4018-4571-a833-ec1ff7768b1e",
+      "name": "小7",
+      "phone": "15823570093",
+      "intentionProducts": [
+        "蜂桥创作",
+        "CreBee",
+        "蜂桥视频大脑",
+        "蜂桥达人管家",
+        "蜂桥 AI 精选"
+      ],
+      "sourcePage": "/",
+      "createdAt": "2026-02-10T03:01:14.463Z"
+    },
+    {
+      "id": "cee87ba7-7360-4a98-95b9-0706f10229ac",
+      "name": "小7",
+      "phone": "15823570093",
+      "intentionProducts": [
+        "蜂桥创作",
+        "CreBee",
+        "蜂桥视频大脑",
+        "蜂桥达人管家",
+        "蜂桥 AI 精选"
+      ],
+      "sourcePage": "/",
+      "createdAt": "2026-02-10T07:41:15.261Z"
+    },
+    {
+      "id": "5d95f4f0-95e4-44af-9274-3bd33c0b27f3",
+      "name": "小7",
+      "phone": "15823570093",
+      "intentionProducts": [
+        "蜂桥创作",
+        "CreBee",
+        "蜂桥视频大脑",
+        "蜂桥达人管家",
+        "蜂桥 AI 精选"
+      ],
+      "sourcePage": "/",
+      "createdAt": "2026-02-10T07:41:22.826Z"
+    },
+    {
+      "id": "b944a1b0-51e3-437b-905d-121dd547eacd",
+      "name": "小8",
+      "phone": "15823570093",
+      "intentionProducts": [
+        "蜂桥创作"
+      ],
+      "sourcePage": "/",
+      "createdAt": "2026-02-10T07:56:29.599Z"
+    }
+  ],
+  "phoneLeads": []
+}

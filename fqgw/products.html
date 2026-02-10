@@ -1370,6 +1370,18 @@
           </button>
         </div>
         <p class="mt-3 text-sm text-stone-600">请填写信息，我们将尽快与您联系。</p>
+        <div class="mt-3 rounded-2xl border border-fq-200 bg-gradient-to-br from-fq-50 to-white p-3">
+          <div class="flex items-center justify-between gap-2">
+            <p class="text-[11px] font-semibold tracking-wide text-fq-700">限时优惠剩余时间</p>
+            <span class="inline-flex items-center gap-1 rounded-full bg-fq-100 px-2 py-0.5 text-[10px] font-bold text-fq-700">
+              <span class="h-1.5 w-1.5 rounded-full bg-fq-500 animate-pulse"></span>
+              HOT
+            </span>
+          </div>
+          <div class="mt-2 rounded-xl bg-gradient-to-r from-stone-900 via-fq-800 to-stone-900 p-[1px] shadow-[0_14px_32px_rgba(216,102,20,0.38)]">
+            <p class="metric-num whitespace-nowrap rounded-[11px] bg-stone-950/95 px-3 py-3 text-center text-lg font-extrabold text-fq-200 md:text-xl" data-countdown></p>
+          </div>
+        </div>
         <form id="globalConsultForm" class="mt-4 space-y-2.5">
           <input
             type="text"
@@ -1401,7 +1413,7 @@
 
     <script>
       const countdownNodes = document.querySelectorAll("[data-countdown]");
-      const deadline = new Date(Date.now() + 72 * 60 * 60 * 1000);
+      const deadline = new Date(Date.now() + 8 * 60 * 60 * 1000);
       function renderTime() {
         const ms = deadline - Date.now();
         const safeMs = ms > 0 ? ms : 0;
@@ -1442,7 +1454,7 @@
         });
       }
       if (globalConsultForm) {
-        globalConsultForm.addEventListener("submit", (event) => {
+        globalConsultForm.addEventListener("submit", async (event) => {
           event.preventDefault();
           const name = document.getElementById("globalName").value.trim();
           const phone = document.getElementById("globalPhone").value.trim();
@@ -1455,8 +1467,28 @@
             globalConsultMessage.textContent = "请输入正确的手机号";
             return;
           }
-          globalConsultMessage.textContent = "提交成功，我们将尽快与您联系";
-          globalConsultForm.reset();
+          try {
+            globalConsultMessage.textContent = "提交中...";
+            const response = await fetch("/api/leads/consultation", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                name,
+                phone,
+                intentionProducts: intentionValues,
+                sourcePage: window.location.pathname,
+              }),
+            });
+            const result = await response.json();
+            if (!response.ok || !result.ok) {
+              globalConsultMessage.textContent = result.message || "提交失败，请稍后再试";
+              return;
+            }
+            globalConsultMessage.textContent = "提交成功，我们将尽快与您联系";
+            globalConsultForm.reset();
+          } catch {
+            globalConsultMessage.textContent = "网络异常，请稍后重试";
+          }
         });
       }
       document.addEventListener("keydown", (event) => {
