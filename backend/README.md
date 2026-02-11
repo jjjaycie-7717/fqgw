@@ -2,7 +2,8 @@
 
 ## 你现在有了什么
 - 一个 Node.js 原生后端：`backend/server.js`
-- 数据会保存到：`backend/data/leads.json`
+- 线索数据主存储：`backend/data/leads.db`（SQLite）
+- JSON 备份文件：`backend/data/leads.json`（首次启动会自动迁移到 SQLite）
 - 前端和后端由同一个服务提供，避免跨域问题
 
 ## 第一步：启动后端
@@ -13,6 +14,8 @@ node backend/server.js
 ```
 
 看到 `Server running at http://localhost:3000` 就代表成功。
+
+说明：后端会调用系统 `sqlite3` 命令，请先确认本机可执行 `sqlite3 --version`。
 
 ## 第二步：打开前端
 浏览器访问：
@@ -40,6 +43,11 @@ http://localhost:3000/api/leads
 ```
 
 可以看到最新保存的咨询和手机号线索。
+
+## SQLite 升级说明
+- 后端已从 JSON 主存储升级为 SQLite
+- 第一次启动时：如果 `leads.db` 还是空库，会自动读取 `leads.json` 并导入
+- 导入后新数据写入 SQLite；`leads.json` 作为历史备份保留
 
 ## 当前接口
 - `POST /api/leads/consultation`：提交“姓名 + 手机号 + 意向产品”

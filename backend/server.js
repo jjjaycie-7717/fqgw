@@ -1,12 +1,17 @@
 const http = require("node:http");
 const path = require("node:path");
 const fs = require("node:fs/promises");
+const fsNative = require("node:fs");
 const { randomUUID } = require("node:crypto");
+const { execFile } = require("node:child_process");
+const { promisify } = require("node:util");
+const zlib = require("node:zlib");
 
 const PORT = Number(process.env.PORT || 3000);
-const WEB_ROOT = path.join(__dirname, "..", "fqgw");
+const WEB_ROOT = path.join(__dirname, "..");
 const DATA_DIR = path.join(__dirname, "data");
-const DATA_FILE = path.join(DATA_DIR, "leads.json");
+const JSON_BACKUP_FILE = path.join(DATA_DIR, "leads.json");
+const DB_FILE = path.join(DATA_DIR, "leads.db");
 const MAX_BODY_SIZE = 1024 * 1024;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 12;
@@ -27,35 +32,201 @@ const MIME_TYPES = {
   ".webp": "image/webp",
 };
 
+const COMPRESSIBLE_EXTS = new Set([".html", ".css", ".js", ".json", ".svg"]);
+const LONG_CACHE_EXTS = new Set([".css", ".js", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"]);
+
+const execFileAsync = promisify(execFile);
 let writeQueue = Promise.resolve();
+let dbInitPromise = null;
 const rateLimitStore = new Map();
 
-async function ensureDataFile() {
-  await fs.mkdir(DATA_DIR, { recursive: true });
-  try {
-    await fs.access(DATA_FILE);
-  } catch {
-    const initialData = { consultations: [], phoneLeads: [] };
-    await fs.writeFile(DATA_FILE, JSON.stringify(initialData, null, 2), "utf8");
-  }
+function sqlQuote(value) {
+  return `'${String(value ?? "").replace(/'/g, "''")}'`;
 }
 
-async function readData() {
-  await ensureDataFile();
-  const raw = await fs.readFile(DATA_FILE, "utf8");
-  const parsed = JSON.parse(raw);
+function normalizeStorageDataShape(raw) {
   return {
-    consultations: Array.isArray(parsed.consultations) ? parsed.consultations : [],
-    phoneLeads: Array.isArray(parsed.phoneLeads) ? parsed.phoneLeads : [],
+    consultations: Array.isArray(raw?.consultations) ? raw.consultations : [],
+    phoneLeads: Array.isArray(raw?.phoneLeads) ? raw.phoneLeads : [],
   };
 }
 
+function parseProductArray(value) {
+  if (Array.isArray(value)) return normalizeProductList(value);
+  if (typeof value !== "string") return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? normalizeProductList(parsed) : [];
+  } catch {
+    return [];
+  }
+}
+
+function normalizeConsultationRecord(record) {
+  return {
+    id: normalizeText(record?.id || "", 100) || randomUUID(),
+    name: normalizeText(record?.name || "", 40),
+    phone: normalizeText(record?.phone || "", 20),
+    intentionProducts: parseProductArray(record?.intentionProducts),
+    sourcePage: normalizeText(record?.sourcePage || "unknown", 40) || "unknown",
+    createdAt: normalizeText(record?.createdAt || new Date().toISOString(), 40),
+  };
+}
+
+function normalizePhoneLeadRecord(record) {
+  return {
+    id: normalizeText(record?.id || "", 100) || randomUUID(),
+    phone: normalizeText(record?.phone || "", 20),
+    source: normalizeText(record?.source || "unknown", 40) || "unknown",
+    createdAt: normalizeText(record?.createdAt || new Date().toISOString(), 40),
+  };
+}
+
+function normalizeDbData(raw) {
+  const shaped = normalizeStorageDataShape(raw);
+  return {
+    consultations: shaped.consultations.map(normalizeConsultationRecord),
+    phoneLeads: shaped.phoneLeads.map(normalizePhoneLeadRecord),
+  };
+}
+
+async function runSql(sql) {
+  await execFileAsync("sqlite3", [DB_FILE, sql]);
+}
+
+async function querySql(sql) {
+  const { stdout } = await execFileAsync("sqlite3", ["-json", DB_FILE, sql]);
+  const text = stdout.trim();
+  if (!text) return [];
+  return JSON.parse(text);
+}
+
+function buildReplaceAllSql(data) {
+  const statements = ["BEGIN;", "DELETE FROM consultations;", "DELETE FROM phone_leads;"];
+
+  for (const item of data.consultations) {
+    statements.push(
+      `INSERT INTO consultations (id, name, phone, intention_products, source_page, created_at) VALUES (${sqlQuote(item.id)}, ${sqlQuote(item.name)}, ${sqlQuote(item.phone)}, ${sqlQuote(JSON.stringify(item.intentionProducts))}, ${sqlQuote(item.sourcePage)}, ${sqlQuote(item.createdAt)});`,
+    );
+  }
+
+  for (const item of data.phoneLeads) {
+    statements.push(
+      `INSERT INTO phone_leads (id, phone, source, created_at) VALUES (${sqlQuote(item.id)}, ${sqlQuote(item.phone)}, ${sqlQuote(item.source)}, ${sqlQuote(item.createdAt)});`,
+    );
+  }
+
+  statements.push("COMMIT;");
+  return statements.join("\n");
+}
+
+async function replaceAllData(nextData, options = {}) {
+  if (!options.skipEnsure) {
+    await ensureDatabase();
+  }
+  const normalized = normalizeDbData(nextData);
+  await runSql(buildReplaceAllSql(normalized));
+  return normalized;
+}
+
+async function migrateFromJsonIfNeeded() {
+  const [countRow] = await querySql(
+    "SELECT (SELECT COUNT(1) FROM consultations) AS consultationsCount, (SELECT COUNT(1) FROM phone_leads) AS phoneLeadsCount;",
+  );
+  if (!countRow) return;
+
+  if (Number(countRow.consultationsCount || 0) > 0 || Number(countRow.phoneLeadsCount || 0) > 0) {
+    return;
+  }
+
+  let raw;
+  try {
+    raw = await fs.readFile(JSON_BACKUP_FILE, "utf8");
+  } catch {
+    return;
+  }
+
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return;
+  }
+
+  const normalized = normalizeDbData(parsed);
+  if (normalized.consultations.length === 0 && normalized.phoneLeads.length === 0) {
+    return;
+  }
+
+  await replaceAllData(normalized, { skipEnsure: true });
+}
+
+async function ensureDatabase() {
+  if (dbInitPromise) return dbInitPromise;
+
+  dbInitPromise = (async () => {
+    await fs.mkdir(DATA_DIR, { recursive: true });
+    await runSql(`
+PRAGMA journal_mode=WAL;
+CREATE TABLE IF NOT EXISTS consultations (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  intention_products TEXT NOT NULL,
+  source_page TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS phone_leads (
+  id TEXT PRIMARY KEY,
+  phone TEXT NOT NULL,
+  source TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_consultations_phone ON consultations(phone);
+CREATE INDEX IF NOT EXISTS idx_consultations_created_at ON consultations(created_at);
+CREATE INDEX IF NOT EXISTS idx_phone_leads_phone ON phone_leads(phone);
+CREATE INDEX IF NOT EXISTS idx_phone_leads_created_at ON phone_leads(created_at);
+`);
+    await migrateFromJsonIfNeeded();
+  })();
+
+  return dbInitPromise;
+}
+
+async function readData() {
+  await ensureDatabase();
+  const consultationsRaw = await querySql(`
+SELECT
+  id,
+  name,
+  phone,
+  intention_products AS intentionProducts,
+  source_page AS sourcePage,
+  created_at AS createdAt
+FROM consultations
+ORDER BY created_at ASC;
+`);
+  const phoneLeadsRaw = await querySql(`
+SELECT
+  id,
+  phone,
+  source,
+  created_at AS createdAt
+FROM phone_leads
+ORDER BY created_at ASC;
+`);
+  return normalizeDbData({
+    consultations: consultationsRaw,
+    phoneLeads: phoneLeadsRaw,
+  });
+}
+
 function updateData(mutator) {
-  writeQueue = writeQueue.then(async () => {
+  writeQueue = writeQueue.catch(() => null).then(async () => {
     const current = await readData();
-    const next = (await mutator(current)) || current;
-    await fs.writeFile(DATA_FILE, JSON.stringify(next, null, 2), "utf8");
-    return next;
+    const currentCopy = structuredClone(current);
+    const next = (await mutator(currentCopy)) || currentCopy;
+    return replaceAllData(next);
   });
   return writeQueue;
 }
@@ -594,9 +765,36 @@ async function serveStatic(req, res, url) {
 
     const ext = path.extname(filePath).toLowerCase();
     const type = MIME_TYPES[ext] || "application/octet-stream";
-    const content = await fs.readFile(filePath);
-    res.writeHead(200, { "Content-Type": type });
-    res.end(content);
+    const headers = {
+      "Content-Type": type,
+      "Cache-Control": LONG_CACHE_EXTS.has(ext) ? "public, max-age=604800, immutable" : "no-cache",
+    };
+
+    const acceptEncoding = String(req.headers["accept-encoding"] || "");
+    const useGzip = COMPRESSIBLE_EXTS.has(ext) && acceptEncoding.includes("gzip");
+
+    if (useGzip) {
+      headers["Content-Encoding"] = "gzip";
+      headers["Vary"] = "Accept-Encoding";
+    }
+
+    res.writeHead(200, headers);
+
+    const fileStream = fsNative.createReadStream(filePath);
+    fileStream.on("error", () => {
+      if (!res.headersSent) {
+        sendText(res, 500, "Server Error");
+      } else {
+        res.destroy();
+      }
+    });
+
+    if (useGzip) {
+      const gzipStream = zlib.createGzip({ level: 6 });
+      fileStream.pipe(gzipStream).pipe(res);
+    } else {
+      fileStream.pipe(res);
+    }
   } catch {
     sendText(res, 404, "Not Found");
   }
