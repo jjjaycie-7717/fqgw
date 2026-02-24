@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>蜂桥官网 | 帮助中心</title>
+    <link rel="icon" type="image/png" href="./public/favicon.png" />
+    <link rel="shortcut icon" href="./public/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -69,13 +71,19 @@
 
       .help-copy .manual-card-title {
         font-family: "Roboto Flex", "Noto Sans SC", sans-serif;
-        font-variation-settings: "opsz" 34, "wght" 730, "wdth" 102;
+        font-variation-settings: "opsz" 30, "wght" 680, "wdth" 102;
         letter-spacing: 0.01em;
         line-height: 1.25;
       }
 
+      .help-copy .manual-card-desc {
+        color: #57534e;
+        line-height: 1.75;
+        letter-spacing: 0.006em;
+      }
+
       .help-copy .manual-card-link {
-        font-weight: 700;
+        font-weight: 600;
         letter-spacing: 0.01em;
       }
 
@@ -90,12 +98,12 @@
         }
 
         .help-copy .manual-card-title {
-          font-size: 1.32rem;
+          font-size: 1.12rem;
         }
       }
     </style>
   </head>
-  <body class="bg-stone-50 font-sans text-stone-900">
+  <body class="bg-gradient-to-b from-fq-50 via-[#fffaf4] to-[#f8f4ef] font-sans text-stone-900">
     <!-- 顶部导航栏 -->
     <header class="fixed inset-x-0 top-0 z-50 border-b border-fq-100 bg-white/95 backdrop-blur">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
@@ -111,7 +119,7 @@
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.169l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06z" clip-rule="evenodd"></path>
               </svg>
             </a>
-            <div class="invisible pointer-events-none absolute left-1/2 top-8 z-20 w-[18rem] -translate-x-1/2 rounded-2xl border border-fq-100 bg-white p-3 opacity-0 shadow-warm transition duration-200 group-hover:visible group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:visible group-focus-within:pointer-events-auto group-focus-within:opacity-100 hover:visible hover:pointer-events-auto hover:opacity-100">
+            <div class="invisible pointer-events-none absolute left-1/2 top-full mt-2 z-20 w-[18rem] -translate-x-1/2 rounded-2xl border border-fq-100 bg-white p-3 opacity-0 shadow-warm transition duration-200 group-hover:visible group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:visible group-focus-within:pointer-events-auto group-focus-within:opacity-100 hover:visible hover:pointer-events-auto hover:opacity-100">
               <div class="grid gap-2">
                 <a href="https://fengqiao.tv/create/video/index.html" target="_blank" rel="noopener noreferrer" class="rounded-xl border border-fq-100 bg-fq-50/50 px-3 py-2 hover:border-fq-200 hover:bg-fq-50">
                   <div class="flex items-center gap-3">
@@ -199,8 +207,8 @@
 
     <main class="mx-auto max-w-7xl px-4 pb-16 pt-28 md:pt-24 lg:px-8">
       <!-- 帮助中心内容 -->
-      <section class="help-copy overflow-hidden rounded-3xl border border-fq-100 bg-white">
-        <div class="bg-gradient-to-b from-fq-50 to-white px-5 py-14 text-center lg:px-10">
+      <section class="help-copy overflow-hidden rounded-3xl border border-fq-100 bg-[#fffdfb] shadow-[0_18px_40px_rgba(120,80,35,0.08)]">
+        <div class="bg-gradient-to-b from-[#fff4e8] via-[#fff9f2] to-[#fffdfb] px-5 py-14 text-center lg:px-10">
           <h1 class="help-hero-title text-4xl font-bold tracking-tight text-stone-900 md:text-5xl">帮助中心</h1>
           <p class="help-hero-subtitle mx-auto mt-6 max-w-4xl text-xl text-stone-600">
             一键获取各产品使用指南，涵盖操作步骤、功能解读与常见问题，助您快速上手、高效解惑，点击即可查看。
@@ -222,52 +230,93 @@
           </div>
         </div>
 
-        <div class="bg-stone-50 px-5 py-12 lg:px-10">
+        <div class="border-t border-fq-100/70 bg-gradient-to-b from-[#fffaf3] to-[#fff7ef] px-5 py-12 lg:px-10">
           <h2 class="help-section-title text-3xl font-bold text-stone-900 md:text-4xl">产品使用手册</h2>
-          <div id="manualList" class="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <p class="mt-3 text-base text-stone-600">按产品查阅飞书手册，覆盖上手流程、核心功能与常见问题。</p>
+          <div id="manualList" class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <a
               data-manual-item
-              href="https://fengqiao.tv/create/video/index.html"
+              href="https://situohezhong.feishu.cn/wiki/MPm7wtloti4zgpkvO41cBgHnnTe"
               target="_blank"
               rel="noopener noreferrer"
-              class="block rounded-2xl border border-fq-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              class="group block h-full rounded-2xl border border-fq-100 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-fq-200 hover:shadow-warm"
             >
-              <img src="./public/fqcz.png" alt="蜂桥创作Logo" class="h-10 w-10 rounded-lg border border-fq-100 bg-white object-contain p-1" />
-              <h3 class="manual-card-title mt-4 text-2xl font-bold text-stone-900 md:text-3xl">蜂桥创作</h3>
-              <p class="manual-card-link mt-4 text-base font-semibold text-fq-700">蜂桥创作使用手册：[点击查看]</p>
+              <div class="flex items-center">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl border border-fq-100 bg-gradient-to-br from-fq-50 to-white">
+                  <img src="./public/fqcz.png" alt="蜂桥创作Logo" class="h-8 w-8 object-contain" />
+                </div>
+              </div>
+              <h3 class="manual-card-title mt-4 text-xl font-semibold text-stone-900 md:text-2xl">蜂桥创作</h3>
+              <p class="manual-card-desc mt-2 text-sm">AI 短视频制作从脚本到成片的操作说明与实战指南。</p>
+              <p class="manual-card-link mt-4 inline-flex items-center gap-1 text-sm text-fq-700">
+                查看手册
+                <svg viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 4l6 6-6 6"></path>
+                </svg>
+              </p>
             </a>
             <a
               data-manual-item
-              href="https://www.shipindanao.com/"
+              href="https://situohezhong.feishu.cn/wiki/CffjwLIb3ihSJ9kElSgcfKx0nNh"
               target="_blank"
               rel="noopener noreferrer"
-              class="block rounded-2xl border border-fq-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              class="group block h-full rounded-2xl border border-fq-100 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-fq-200 hover:shadow-warm"
             >
-              <img src="./public/视频大脑.png" alt="视频大脑Logo" class="h-10 w-10 rounded-lg border border-fq-100 bg-white object-contain p-1" />
-              <h3 class="manual-card-title mt-4 text-2xl font-bold text-stone-900 md:text-3xl">视频大脑</h3>
-              <p class="manual-card-link mt-4 text-base font-semibold text-fq-700">视频大脑使用手册：[点击查看]</p>
+              <div class="flex items-center">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl border border-fq-100 bg-gradient-to-br from-fq-50 to-white">
+                  <img src="./public/视频大脑.png" alt="视频大脑Logo" class="h-8 w-8 object-contain" />
+                </div>
+              </div>
+              <h3 class="manual-card-title mt-4 text-xl font-semibold text-stone-900 md:text-2xl">视频大脑</h3>
+              <p class="manual-card-desc mt-2 text-sm">电商视频素材管理、打标检索与协同生产流程说明。</p>
+              <p class="manual-card-link mt-4 inline-flex items-center gap-1 text-sm text-fq-700">
+                查看手册
+                <svg viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 4l6 6-6 6"></path>
+                </svg>
+              </p>
             </a>
             <a
               data-manual-item
-              href="https://www.darenguanjia.com/"
+              href="https://situohezhong.feishu.cn/wiki/NFJ3wnj2TiD6MOkywnCcm5fNnIh?fromScene=spaceOverview"
               target="_blank"
               rel="noopener noreferrer"
-              class="block rounded-2xl border border-fq-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              class="group block h-full rounded-2xl border border-fq-100 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-fq-200 hover:shadow-warm"
             >
-              <img src="./public/达人管家.png" alt="达人管家Logo" class="h-10 w-10 rounded-lg border border-fq-100 bg-white object-contain p-1" />
-              <h3 class="manual-card-title mt-4 text-2xl font-bold text-stone-900 md:text-3xl">达人管家</h3>
-              <p class="manual-card-link mt-4 text-base font-semibold text-fq-700">达人管家使用手册：[点击查看]</p>
+              <div class="flex items-center">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl border border-fq-100 bg-gradient-to-br from-fq-50 to-white">
+                  <img src="./public/达人管家.png" alt="达人管家Logo" class="h-8 w-8 object-contain" />
+                </div>
+              </div>
+              <h3 class="manual-card-title mt-4 text-xl font-semibold text-stone-900 md:text-2xl">达人管家</h3>
+              <p class="manual-card-desc mt-2 text-sm">达人筛选、建联、投放与复盘的全流程使用指引。</p>
+              <p class="manual-card-link mt-4 inline-flex items-center gap-1 text-sm text-fq-700">
+                查看手册
+                <svg viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 4l6 6-6 6"></path>
+                </svg>
+              </p>
             </a>
             <a
               data-manual-item
-              href="https://www.crebee.cn/"
+              href="https://situohezhong.feishu.cn/wiki/VeNYw4b3mi2Bqik1lfEc4uZTnCe"
               target="_blank"
               rel="noopener noreferrer"
-              class="block rounded-2xl border border-fq-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              class="group block h-full rounded-2xl border border-fq-100 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-fq-200 hover:shadow-warm"
             >
-              <img src="./public/CreBeelogo.png" alt="CreBee Logo" class="h-10 w-10 rounded-lg border border-fq-100 bg-white object-contain p-1" />
-              <h3 class="manual-card-title mt-4 text-2xl font-bold text-stone-900 md:text-3xl">CreBee</h3>
-              <p class="manual-card-link mt-4 text-base font-semibold text-fq-700">CreBee使用手册：[点击查看]</p>
+              <div class="flex items-center">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl border border-fq-100 bg-gradient-to-br from-fq-50 to-white">
+                  <img src="./public/CreBeelogo.png" alt="CreBee Logo" class="h-8 w-8 object-contain" />
+                </div>
+              </div>
+              <h3 class="manual-card-title mt-4 text-xl font-semibold text-stone-900 md:text-2xl">CreBee</h3>
+              <p class="manual-card-desc mt-2 text-sm">矩阵账号内容分发、发布记录与数据查看操作指南。</p>
+              <p class="manual-card-link mt-4 inline-flex items-center gap-1 text-sm text-fq-700">
+                查看手册
+                <svg viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 4l6 6-6 6"></path>
+                </svg>
+              </p>
             </a>
           </div>
           <p class="help-note mt-8 text-base leading-8 text-stone-700">
@@ -278,7 +327,7 @@
     </main>
 
     <!-- 页脚 -->
-    <footer class="border-t border-fq-100 bg-white">
+    <footer class="border-t border-fq-100 bg-gradient-to-b from-white to-[#fffaf4]">
       <div class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
         <div class="grid gap-10 md:grid-cols-5">
           <div>

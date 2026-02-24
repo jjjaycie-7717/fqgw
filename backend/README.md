@@ -19,12 +19,17 @@ export FEISHU_APP_SECRET=xxx
 export FEISHU_APP_TOKEN=bascnxxx
 export FEISHU_CONSULTATION_TABLE_ID=tblxxx
 export FEISHU_PHONE_TABLE_ID=tblyyy
+export CONSULTATION_ARTICLE_LINKS=https://mp.weixin.qq.com/s/xxx,https://mp.weixin.qq.com/s/yyy
+export CONSULTATION_MAX_ITEMS=9
 ```
 
 说明：
 - 如果咨询和手机号都写到同一个表，也可以只设置：
   - `FEISHU_TABLE_ID=tblxxx`
 - 此时 `FEISHU_CONSULTATION_TABLE_ID` 和 `FEISHU_PHONE_TABLE_ID` 可不填
+- 资讯同步可选参数：
+  - `CONSULTATION_ARTICLE_LINKS`：公众号文章链接列表（逗号分隔）
+  - `CONSULTATION_MAX_ITEMS`：对外返回的最大文章数（默认 9）
 
 ## 飞书多维表格字段建议
 请在目标表中创建这些列（字段名要一致）：
@@ -58,6 +63,12 @@ http://localhost:3000/index.html
 ```
 
 3. 去飞书多维表格看新增行。
+
+4. 查看自动同步的资讯接口：
+
+```text
+http://localhost:3000/api/consultation/articles
+```
 
 ## 防护策略（仍保留）
 - 限流：同一 IP 对提交接口 1 分钟最多 12 次
