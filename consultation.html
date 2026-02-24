@@ -79,11 +79,109 @@
         }
       }
     </style>
+      <style>
+      @media (max-width: 767px) {
+        .mobile-top-nav {
+          display: flex;
+          gap: 0.4rem;
+          overflow-x: auto;
+          padding-top: 0.35rem;
+          padding-bottom: 0.45rem;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+
+        .mobile-top-nav::-webkit-scrollbar {
+          display: none;
+        }
+
+        .mobile-top-link {
+          display: inline-flex;
+          flex: 0 0 auto;
+          min-height: 1.85rem;
+          align-items: center;
+          justify-content: center;
+          border-radius: 0.7rem;
+          border: 1px solid #ffeddc;
+          background: #fff;
+          padding: 0.18rem 0.55rem;
+          font-size: 0.74rem;
+          line-height: 1rem;
+          color: #44403c;
+          text-align: center;
+          white-space: nowrap;
+        }
+
+        .mobile-top-link-active {
+          border-color: #ffd7b1;
+          background: #fff8f2;
+          color: #b44d10;
+          font-weight: 700;
+        }
+        .mobile-footer-shell {
+          margin-top: 0.2rem;
+          border: 1px solid #ffeddc;
+          border-radius: 1rem;
+          background: rgba(255, 255, 255, 0.94);
+          padding: 0.9rem 0.8rem;
+        }
+
+        .mobile-footer-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 0.55rem 0.4rem;
+        }
+
+        .mobile-footer-grid > div {
+          border: none;
+          border-radius: 0;
+          background: transparent;
+          padding: 0;
+          min-width: 0;
+        }
+
+        .mobile-footer-grid > div:first-child {
+          grid-column: 1 / -1;
+        }
+
+        .mobile-footer-grid > div:nth-child(n + 2) {
+          text-align: center;
+        }
+
+        .mobile-footer-grid > div:nth-child(n + 2) h3 {
+          font-size: 0.74rem;
+          line-height: 1rem;
+        }
+
+        .mobile-footer-grid > div:nth-child(n + 2) .mt-4 {
+          margin-top: 0.3rem;
+        }
+
+        .mobile-footer-grid > div:nth-child(n + 2) .text-sm {
+          font-size: 0.72rem;
+          line-height: 1rem;
+        }
+
+        .mobile-footer-grid > div:nth-child(5) img {
+          height: 2.9rem;
+          width: 2.9rem;
+          margin-top: 0.3rem;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .mobile-footer-meta {
+          margin-top: 0.7rem;
+          gap: 0.35rem;
+          padding-top: 0.65rem;
+          text-align: center;
+        }
+      }
+    </style>
   </head>
-  <body class="bg-stone-50 font-sans text-stone-900">
+  <body class="bg-stone-50 font-sans text-stone-900 pb-24 md:pb-0">
     <!-- 顶部导航栏 -->
     <header class="fixed inset-x-0 top-0 z-50 border-b border-fq-100 bg-white/95 backdrop-blur">
-      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-3 py-2 md:px-4 lg:px-8">
         <a href="./index.html" class="flex items-center gap-3">
           <img src="./public/logo.webp" alt="蜂桥 Logo" class="h-9 w-auto rounded object-contain" />
         </a>
@@ -150,7 +248,7 @@
           <a href="./consultation.html" class="text-fq-700">产品咨询</a>
           <a href="./about.html" class="transition hover:text-fq-600">关于我们</a>
         </nav>
-        <div class="flex items-center gap-3">
+        <div class="hidden items-center gap-3 md:flex">
           <button
             type="button"
             id="openConsultFromNav"
@@ -172,17 +270,17 @@
         </div>
       </div>
       <div class="border-t border-fq-100 md:hidden">
-        <nav class="mx-auto flex max-w-7xl gap-5 overflow-x-auto px-4 py-2 text-base font-medium text-stone-700">
-          <a href="./index.html" class="whitespace-nowrap">首页</a>
-          <a href="./products.html" class="whitespace-nowrap">产品中心</a>
-          <a href="./help.html" class="whitespace-nowrap">帮助中心</a>
-          <a href="./consultation.html" class="whitespace-nowrap text-fq-700">产品咨询</a>
-          <a href="./about.html" class="whitespace-nowrap">关于我们</a>
+        <nav class="mobile-top-nav mx-auto flex max-w-7xl px-3 py-1.5 text-base font-medium text-stone-700">
+          <a href="./index.html" class="mobile-top-link">首页</a>
+          <a href="./products.html" class="mobile-top-link">产品中心</a>
+          <a href="./help.html" class="mobile-top-link">帮助中心</a>
+          <a href="./consultation.html" class="mobile-top-link mobile-top-link-active">产品咨询</a>
+          <a href="./about.html" class="mobile-top-link">关于我们</a>
         </nav>
       </div>
     </header>
 
-    <main class="mx-auto max-w-7xl px-4 pb-16 pt-28 md:pt-24 lg:px-8">
+    <main class="mx-auto max-w-7xl px-4 pb-16 pt-24 md:pt-24 lg:px-8">
       <!-- 产品资讯内容 -->
       <section class="consult-copy relative overflow-hidden rounded-3xl border border-fq-100 bg-white p-5 lg:p-8">
         <div class="pointer-events-none absolute -top-28 -right-24 h-64 w-64 rounded-full bg-fq-100/60 blur-3xl"></div>
@@ -198,8 +296,8 @@
 
     <!-- 页脚 -->
     <footer class="border-t border-fq-100 bg-white">
-      <div class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
-        <div class="grid gap-10 md:grid-cols-5">
+      <div class="mobile-footer-shell mx-auto max-w-7xl px-4 py-12 lg:px-8">
+        <div class="mobile-footer-grid grid gap-10 md:grid-cols-5">
           <div>
             <div class="flex items-center gap-3">
               <img src="./public/logo.webp" alt="蜂桥 Logo" class="h-8 w-auto rounded object-contain" />
@@ -237,14 +335,14 @@
             <img src="./public/contact code.jpeg" alt="蜂桥企业微信二维码" class="mt-3 h-28 w-28 rounded-xl border border-fq-100 object-cover" />
           </div>
         </div>
-        <div class="mt-10 flex flex-col gap-3 border-t border-fq-100 pt-5 text-xs text-stone-500 sm:flex-row sm:items-center sm:justify-between">
+        <div class="mobile-footer-meta mt-10 flex flex-col gap-3 border-t border-fq-100 pt-5 text-xs text-stone-500 sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 北京思拓合众科技有限公司. 保留所有权利。</p>
           <p>电话咨询：13237183098</p>
         </div>
       </div>
     </footer>
     <!-- 侧边固定留资组件 -->
-        <aside id="leadForm" class="fixed right-4 top-[56%] z-40 -translate-y-1/2 md:right-6 md:top-1/2">
+        <aside id="leadForm" class="hidden fixed right-4 top-[56%] z-40 -translate-y-1/2 md:block md:right-6 md:top-1/2">
       <div class="rounded-[30px] border border-fq-200 bg-white/80 p-2 shadow-warm backdrop-blur-md">
         <div class="flex flex-col items-center gap-2">
           <div class="relative">
@@ -322,7 +420,66 @@
       </a>
     </aside>
 
+    <!-- 移动端底部快捷操作 -->
+    <div class="fixed inset-x-0 bottom-0 z-50 border-t border-fq-100 bg-white/95 px-3 pb-[calc(env(safe-area-inset-bottom,0px)+0.7rem)] pt-2 backdrop-blur md:hidden">
+      <div class="mx-auto grid max-w-3xl grid-cols-3 gap-2">
+        <button
+          type="button"
+          id="openConsultFromBottom"
+          class="inline-flex h-11 items-center justify-center rounded-full bg-fq-600 px-3 text-sm font-semibold text-white"
+        >
+          立即咨询
+        </button>
+        <button
+          type="button"
+          id="openWechatFromBottom"
+          class="inline-flex h-11 items-center justify-center rounded-full border border-fq-200 bg-fq-50 px-3 text-sm font-semibold text-fq-700"
+        >
+          微信咨询
+        </button>
+        <a
+          href="tel:13237183098"
+          class="inline-flex h-11 items-center justify-center rounded-full border border-fq-200 bg-white px-3 text-sm font-semibold text-stone-700"
+        >
+          电话咨询
+        </a>
+      </div>
+    </div>
 
+    <!-- 移动端微信咨询弹层 -->
+    <div id="mobileWechatSheet" class="fixed inset-0 z-[75] hidden items-end bg-stone-900/45 p-3 md:hidden">
+      <div class="w-full rounded-2xl bg-white p-4 shadow-2xl">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="text-sm font-semibold text-stone-900">微信咨询</p>
+            <p class="mt-1 text-xs text-stone-500">可保存二维码后在微信中识别联系</p>
+          </div>
+          <button type="button" data-close-wechat-sheet class="rounded-lg p-1.5 text-stone-500">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <img src="./public/contact code.jpeg" alt="企业微信二维码" class="mx-auto mt-3 h-44 w-44 rounded-xl border border-fq-100 object-cover" />
+        <div class="mt-4 grid grid-cols-2 gap-2">
+          <a
+            href="./public/contact code.jpeg"
+            download="contact-code.jpeg"
+            class="inline-flex h-10 items-center justify-center rounded-lg border border-fq-200 bg-white text-sm font-semibold text-stone-700"
+          >
+            保存图片
+          </a>
+          <a
+            href="./public/contact code.jpeg"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex h-10 items-center justify-center rounded-lg border border-fq-200 bg-fq-50 text-sm font-semibold text-fq-700"
+          >
+            查看大图
+          </a>
+        </div>
+      </div>
+    </div>
 
     <!-- 全局咨询弹窗 -->
     <div id="globalConsultModal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-stone-900/45 p-4 backdrop-blur-sm">
@@ -474,9 +631,9 @@
                     <a href="${href}" target="_blank" rel="noopener noreferrer" class="transition hover:text-fq-700">${title}</a>
                   </h2>
                   ${summary ? `<p class="consult-card-desc mt-2 text-sm leading-6 text-stone-600">${summary}</p>` : ""}
-                  <div class="mt-4 flex items-center justify-between gap-2">
+                  <div class="mt-4 flex items-center justify-center gap-2 md:justify-between">
                     <a href="${href}" target="_blank" rel="noopener noreferrer" class="inline-block rounded-full bg-fq-600 px-3 py-1.5 text-xs font-semibold text-white">点击查看</a>
-                    ${dateText ? `<span class="text-xs text-stone-400">${dateText}</span>` : ""}
+                    ${dateText ? `<span class="hidden text-xs text-stone-400 md:inline">${dateText}</span>` : ""}
                   </div>
                 </div>
               </article>
@@ -582,6 +739,40 @@
           hideGlobalConsultModal();
         }
       });
+      const openConsultFromBottom = document.getElementById("openConsultFromBottom");
+      if (openConsultFromBottom) {
+        openConsultFromBottom.addEventListener("click", (event) => {
+          if (typeof markConsultInteracted === "function") {
+            markConsultInteracted();
+          }
+          openGlobalConsultModal();
+          event.stopPropagation();
+        });
+      }
+
+      const mobileWechatSheet = document.getElementById("mobileWechatSheet");
+      const openWechatFromBottom = document.getElementById("openWechatFromBottom");
+      const closeWechatSheetButtons = document.querySelectorAll("[data-close-wechat-sheet]");
+      const toggleMobileWechatSheet = (open) => {
+        if (!mobileWechatSheet) return;
+        mobileWechatSheet.classList.toggle("hidden", !open);
+        mobileWechatSheet.classList.toggle("flex", open);
+        document.body.classList.toggle("overflow-hidden", open);
+      };
+      if (openWechatFromBottom) {
+        openWechatFromBottom.addEventListener("click", () => toggleMobileWechatSheet(true));
+      }
+      if (closeWechatSheetButtons.length) {
+        closeWechatSheetButtons.forEach((button) => {
+          button.addEventListener("click", () => toggleMobileWechatSheet(false));
+        });
+      }
+      if (mobileWechatSheet) {
+        mobileWechatSheet.addEventListener("click", (event) => {
+          if (event.target === mobileWechatSheet) toggleMobileWechatSheet(false);
+        });
+      }
+
       // 侧边咨询悬浮按钮：点击展开面板（移动端友好）
       const dock = document.getElementById("leadForm");
       if (dock) {

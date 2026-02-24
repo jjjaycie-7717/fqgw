@@ -248,9 +248,46 @@ function normalizeDate(value) {
   return new Date(timestamp).toISOString();
 }
 
+function canonicalizeConsultationLink(rawLink) {
+  const input = normalizeText(String(rawLink || ""), 1200);
+  if (!input) return "";
+  try {
+    const parsed = new URL(input);
+    if (
+      parsed.hostname.includes("mp.weixin.qq.com") &&
+      parsed.pathname === "/mp/wappoc_appmsgcaptcha"
+    ) {
+      const targetUrl = normalizeText(parsed.searchParams.get("target_url") || "", 1200);
+      if (!targetUrl) return parsed.href;
+      try {
+        return new URL(targetUrl, "https://mp.weixin.qq.com").href;
+      } catch {
+        return parsed.href;
+      }
+    }
+    return parsed.href;
+  } catch {
+    return input;
+  }
+}
+
+function isWxCaptchaUrl(rawLink) {
+  try {
+    const parsed = new URL(String(rawLink || ""));
+    return parsed.hostname.includes("mp.weixin.qq.com") && parsed.pathname === "/mp/wappoc_appmsgcaptcha";
+  } catch {
+    return false;
+  }
+}
+
+function mappedTitleForConsultationLink(link) {
+  const canonicalLink = canonicalizeConsultationLink(link);
+  return normalizeText(CONSULTATION_ARTICLE_TITLE_OVERRIDES[canonicalLink], 140);
+}
+
 function sourceNameFromUrl(sourceUrl) {
   try {
-    const host = new URL(sourceUrl).hostname.replace(/^www\./i, "");
+    const host = new URL(canonicalizeConsultationLink(sourceUrl)).hostname.replace(/^www\./i, "");
     if (host.includes("mp.weixin.qq.com")) return "微信公众号";
     return normalizeText(host, 60) || "公众号文章";
   } catch {
@@ -436,8 +473,9 @@ function extractWxImageFromScript(html) {
 }
 
 async function fetchArticleFromLink(link) {
-  const fallbackSourceName = sourceNameFromUrl(link);
-  const response = await fetch(link, {
+  const sourceLink = canonicalizeConsultationLink(link);
+  const fallbackSourceName = sourceNameFromUrl(sourceLink);
+  const response = await fetch(sourceLink, {
     headers: {
       Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
       "User-Agent": "FQGW1-ConsultationCard/1.0",
@@ -448,7 +486,10 @@ async function fetchArticleFromLink(link) {
     throw new Error(`http_${response.status}`);
   }
   const html = await response.text();
-  const finalUrl = response.url || link;
+  const finalUrl = response.url || sourceLink;
+  if (isWxCaptchaUrl(finalUrl)) {
+    throw new Error("wx_captcha_blocked");
+  }
   const wxTitle = extractWxScriptValue(html, "msg_title");
   const wxDesc = extractWxScriptValue(html, "msg_desc");
   const wxNickname = extractWxScriptValue(html, "nickname");
@@ -457,7 +498,9 @@ async function fetchArticleFromLink(link) {
     60,
   );
   const sourceName = wxNickname || siteName || fallbackSourceName;
+  const mappedTitle = mappedTitleForConsultationLink(sourceLink);
   const title =
+    mappedTitle ||
     wxTitle ||
     extractMetaContent(html, ["og:title", "twitter:title"]) ||
     extractTitleTag(html) ||
@@ -477,7 +520,7 @@ async function fetchArticleFromLink(link) {
     {
       title,
       summary,
-      link: finalUrl,
+      link: sourceLink,
       image: imageUrl,
       category: "公众号文章",
       sourceName,
@@ -509,8 +552,9 @@ function isLikelyUrl(value) {
 }
 
 function buildFallbackArticle(link, previousItem) {
-  const mappedTitle = normalizeText(CONSULTATION_ARTICLE_TITLE_OVERRIDES[link], 140);
-  if (previousItem && previousItem.link === link) {
+  const canonicalLink = canonicalizeConsultationLink(link);
+  const mappedTitle = mappedTitleForConsultationLink(canonicalLink);
+  if (previousItem && canonicalizeConsultationLink(previousItem.link) === canonicalLink) {
     const safeTitle = normalizeText(previousItem.title, 140);
     const previousSummary = normalizeText(previousItem.summary, 220);
     const safeSummary = previousSummary === "点击查看公众号原文" ? "" : previousSummary;
@@ -519,15 +563,16 @@ function buildFallbackArticle(link, previousItem) {
       title: mappedTitle || (safeTitle && !isLikelyUrl(safeTitle) ? safeTitle : "公众号原文标题"),
       summary: safeSummary,
       category: normalizeText(previousItem.category, 32) || "公众号文章",
-      sourceName: normalizeText(previousItem.sourceName, 60) || sourceNameFromUrl(link),
+      sourceName: normalizeText(previousItem.sourceName, 60) || sourceNameFromUrl(canonicalLink),
       image: normalizeText(previousItem.image, 600),
+      link: canonicalLink,
     };
   }
-  const sourceName = sourceNameFromUrl(link);
+  const sourceName = sourceNameFromUrl(canonicalLink);
   return {
     title: mappedTitle || "公众号原文标题",
     summary: "",
-    link,
+    link: canonicalLink,
     image: "",
     category: "公众号文章",
     sourceName,
@@ -540,7 +585,22 @@ async function loadConsultationArticleCache() {
     const raw = await fs.readFile(CONSULTATION_CACHE_FILE, "utf8");
     const parsed = JSON.parse(raw);
     const items = Array.isArray(parsed?.items)
-      ? dedupeAndSortArticles(parsed.items.map((item) => normalizeArticle(item)).filter(Boolean))
+      ? dedupeAndSortArticles(
+          parsed.items
+            .map((item) => {
+              const canonicalLink = canonicalizeConsultationLink(item?.link || item?.url || "");
+              const mappedTitle = mappedTitleForConsultationLink(canonicalLink);
+              return normalizeArticle(
+                {
+                  ...item,
+                  link: canonicalLink || item?.link || "",
+                  title: mappedTitle || item?.title || "",
+                },
+                sourceNameFromUrl(canonicalLink || item?.link || ""),
+              );
+            })
+            .filter(Boolean),
+        )
       : [];
     if (items.length > 0) {
       consultationArticlesCache.items = items;
@@ -580,18 +640,26 @@ async function syncConsultationArticles() {
   const results = await Promise.allSettled(targetLinks.map((link) => fetchArticleFromLink(link)));
   const previousByLink = new Map(
     (Array.isArray(consultationArticlesCache.items) ? consultationArticlesCache.items : []).map((item) => [
-      item?.link,
+      canonicalizeConsultationLink(item?.link),
       item,
     ]),
   );
   const items = [];
   const errors = [];
   results.forEach((result, index) => {
-    const source = targetLinks[index];
+    const source = canonicalizeConsultationLink(targetLinks[index]);
     const previousItem = previousByLink.get(source);
     if (result.status === "fulfilled") {
       if (result.value) {
-        items.push(result.value);
+        const safeItem = normalizeArticle(
+          {
+            ...result.value,
+            link: source,
+            title: mappedTitleForConsultationLink(source) || result.value.title || "公众号原文标题",
+          },
+          sourceNameFromUrl(source),
+        );
+        items.push(safeItem || buildFallbackArticle(source, previousItem));
       } else {
         items.push(buildFallbackArticle(source, previousItem));
       }
