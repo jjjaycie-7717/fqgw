@@ -52,11 +52,11 @@ function loadEnvFile(filePath) {
   for (const rawLine of content.split(/\r?\n/)) {
     const line = rawLine.trim();
     if (!line || line.startsWith("#")) continue;
-    const index = line.indexOf("=");
-    if (index <= 0) continue;
-    const key = line.slice(0, index).trim();
+    const idx = line.indexOf("=");
+    if (idx <= 0) continue;
+    const key = line.slice(0, idx).trim();
     if (!key || process.env[key] !== undefined) continue;
-    let value = line.slice(index + 1).trim();
+    let value = line.slice(idx + 1).trim();
     if (
       (value.startsWith('"') && value.endsWith('"')) ||
       (value.startsWith("'") && value.endsWith("'"))
@@ -97,13 +97,6 @@ function isValidPhone(phone) {
   return /^1\d{10}$/.test(phone);
 }
 
-function sameProductSet(a, b) {
-  if (a.length !== b.length) return false;
-  const sortedA = [...a].sort();
-  const sortedB = [...b].sort();
-  return sortedA.every((item, index) => item === sortedB[index]);
-}
-
 function getClientIp(req) {
   const forwarded = req.headers["x-forwarded-for"];
   if (typeof forwarded === "string" && forwarded.trim()) {
@@ -124,12 +117,10 @@ function cleanupRateLimitStore(now) {
 function isRateLimited(key, now = Date.now()) {
   cleanupRateLimitStore(now);
   const current = rateLimitStore.get(key);
-
   if (!current || now - current.windowStart >= RATE_LIMIT_WINDOW_MS) {
     rateLimitStore.set(key, { windowStart: now, count: 1 });
     return false;
   }
-
   current.count += 1;
   return current.count > RATE_LIMIT_MAX_REQUESTS;
 }
@@ -144,23 +135,31 @@ function cleanupDuplicateStore(now) {
 
 function hasDuplicateSubmission(key, now = Date.now()) {
   cleanupDuplicateStore(now);
-  const prevTime = duplicateStore.get(key);
-  return Boolean(prevTime && now - prevTime <= DUPLICATE_WINDOW_MS);
+  const prev = duplicateStore.get(key);
+  return Boolean(prev && now - prev <= DUPLICATE_WINDOW_MS);
 }
 
 function markDuplicateSubmission(key, now = Date.now()) {
   duplicateStore.set(key, now);
 }
 
+function hasFeishuConfig() {
+  return Boolean(
+    FEISHU_APP_ID &&
+      FEISHU_APP_SECRET &&
+      FEISHU_APP_TOKEN &&
+      FEISHU_CONSULTATION_TABLE_ID &&
+      FEISHU_PHONE_TABLE_ID,
+  );
+}
+
 function mapFeishuErrorMessage(error) {
   const raw = String(error?.message || "");
   if (raw.startsWith("feishu_auth_failed:")) {
-    const detail = raw.slice("feishu_auth_failed:".length) || "unknown";
-    return `飞书鉴权失败：${detail}`;
+    return `飞书鉴权失败：${raw.slice("feishu_auth_failed:".length) || "unknown"}`;
   }
   if (raw.startsWith("feishu_record_failed:")) {
-    const detail = raw.slice("feishu_record_failed:".length) || "unknown";
-    return `飞书写入失败：${detail}`;
+    return `飞书写入失败：${raw.slice("feishu_record_failed:".length) || "unknown"}`;
   }
   return "飞书写入失败，请稍后重试";
 }
@@ -188,16 +187,6 @@ async function readJsonBody(req) {
     });
     req.on("error", reject);
   });
-}
-
-function hasFeishuConfig() {
-  return Boolean(
-    FEISHU_APP_ID &&
-      FEISHU_APP_SECRET &&
-      FEISHU_APP_TOKEN &&
-      FEISHU_CONSULTATION_TABLE_ID &&
-      FEISHU_PHONE_TABLE_ID,
-  );
 }
 
 async function getFeishuTenantToken() {
@@ -243,8 +232,6 @@ async function createFeishuRecord(tableId, fields) {
   if (!response.ok || data.code !== 0) {
     throw new Error(`feishu_record_failed:${data.msg || "unknown"}`);
   }
-
-  return data;
 }
 
 async function syncConsultationToFeishu(record) {
@@ -404,18 +391,12 @@ async function handleApi(req, res, url) {
   }
 
   if (req.method === "GET" && url.pathname === "/api/leads") {
-    sendJson(res, 410, {
-      ok: false,
-      message: "已切换为飞书多维表格存储，请在飞书中查看线索数据",
-    });
+    sendJson(res, 410, { ok: false, message: "已切换为飞书多维表格存储，请在飞书中查看线索数据" });
     return true;
   }
 
   if (req.method === "GET" && url.pathname.startsWith("/api/admin/")) {
-    sendJson(res, 410, {
-      ok: false,
-      message: "已切换为飞书多维表格存储，请在飞书中查看和筛选数据",
-    });
+    sendJson(res, 410, { ok: false, message: "已切换为飞书多维表格存储，请在飞书中查看和筛选数据" });
     return true;
   }
 
